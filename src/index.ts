@@ -21,6 +21,15 @@ app.get('/products/:id', (req: Request, res: Response) => {
         res.send(404)
     }
 })
+app.put('/products/:id', (req: Request, res: Response) => {
+    let product = products.find(el => el.id === +req.params.id)
+    if (product) {
+        product.title = req.body.title
+        res.send(product)
+    } else {
+        res.send(404)
+    }
+})
 app.post('/products', (req: Request, res: Response) => {
    const newProduct = {
        id: +(new Date()),
