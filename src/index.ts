@@ -1,9 +1,14 @@
 import express, {Request, Response}  from 'express'
+import bodyParser from 'body-parser'
 const app = express()
-const port = 3000
+const port = 5000
 
 const products = [{id: 1, title: 'tomato'}, {id: 2, title: 'apple'}]
 const addresses = [{id: 1, value: 'Nachimova'}, {id: 2, value: 'Molodejnaya'}]
+
+
+const parserMiddleware = bodyParser({})
+app.use(parserMiddleware)
 
 app.get('/products', (req: Request, res: Response) => {
     res.send(products)
@@ -15,6 +20,14 @@ app.get('/products/:id', (req: Request, res: Response) => {
     } else {
         res.send(404)
     }
+})
+app.post('/products', (req: Request, res: Response) => {
+   const newProduct = {
+       id: +(new Date()),
+       title: req.body.title
+   }
+   products.push(newProduct)
+    res.status(201).send(newProduct)
 })
 app.delete('/products/:id', (req: Request, res: Response) => {
     for (let i=0; i<products.length; i++) {
